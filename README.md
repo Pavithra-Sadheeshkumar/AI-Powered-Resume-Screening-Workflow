@@ -73,37 +73,37 @@ The solution demonstrates:
 
 ```mermaid
 
-A[Form Submission] --> B[Validate Input]
+flowchart TD
 
-B -->|Invalid| Z[Mark as Invalid]
+subgraph Input Layer
+A[Form Submission]
+end
 
-B -->|Valid| C[Check Duplicate (DB)]
-C -->|Duplicate| Y[Stop Processing]
+subgraph Validation Layer
+B[Validate Input]
+C[Check Duplicate]
+end
 
-C -->|New| D[Upload Resume to Drive]
-D --> E[Capture webViewLink]
+subgraph Processing Layer
+D[Resume Upload]
+G[Text Extraction]
+I[AI Evaluation]
+end
 
-E --> F[Download Resume]
-F --> G[Extract Resume Text]
+subgraph Decision Layer
+L{Decision}
+end
 
-G --> H[Process Job Description]
-H --> I[AI Resume Evaluation]
+subgraph Output Layer
+M[Shortlist]
+N[Reject]
+O[Manual Review]
+end
 
-I --> J[Insert Candidate (Processing - DB)]
-J --> K[Update Candidate (Processed - DB)]
-
-K --> L{Decision}
-
-L -->|Shortlist| M[Send Email + Slack]
-L -->|Reject| N[Send Rejection Email]
-L -->|Review| O[Manual Review Queue]
-
-B -->|Error| X[Error Handling]
-C -->|Error| X
-D -->|Error| X
-I -->|Error| X
-
-X --> W[Store Failed Candidate]
+A --> B --> C --> D --> G --> I --> L
+L --> M
+L --> N
+L --> O
 
 ```
 
